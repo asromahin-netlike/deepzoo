@@ -1,4 +1,5 @@
-from keras.layers import Conv2D,MaxPooling2D,concatenate,UpSampling2D
+from keras.layers import Conv2D,MaxPooling2D,concatenate,UpSampling2D,Input
+from keras.models import Model
 
 def simple_unet(input_size = (32,32,1),alpha=1,classes=1,activation='sigmoid'):
     inputs = Input(input_size)
