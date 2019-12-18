@@ -84,7 +84,7 @@ def upsample_block(inputs,kernels=1,kernel_size=3,activation = 'relu', padding =
     out = Conv2D(kernels, kernel_size, activation =activation, padding = padding, kernel_initializer = kernel_initializer)(out)
     return out
     
- def connect_upsample_block(inputs,kernels=1,kernel_size=3,activation = 'relu', padding = 'same', kernel_initializer = 'he_normal',upsample_size=(2,2)):
+def connect_upsample_block(inputs,kernels=1,kernel_size=3,activation = 'relu', padding = 'same', kernel_initializer = 'he_normal',upsample_size=(2,2)):
     out = Conv2D(upsample_size[0]*upsample_size[1]*kernels ,2, activation =activation, padding = padding, kernel_initializer = kernel_initializer)(inputs[0]))
     out=Reshape(target_shape=(int(inputs.shape[0])*upsample_size[0],int(inputs.shape[1])*upsample_size[1],kernels))(out)
     if(len(inputs)>1):
