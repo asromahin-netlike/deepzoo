@@ -106,7 +106,7 @@ def simple_depth_unet(input_size = (32,32,1),alpha=1,pool_stop=None,classes=1,ac
         conv_poolings.append(conv)
     for j in range(depth):
         step=depth-1-j
-        out=upsample_block([out,poolings[step]],int(64*step*alpha))
+        out=upsample_block([out,conv_poolings[step]],int(64*step*alpha))
     out = Conv2D(classes*2, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(out)
     out = Conv2D(classes, 1, activation = activation)(out)
     model=Model(inputs=[inputs],outputs=[out])
@@ -125,7 +125,7 @@ def connected_unet_depth(input_size = (32,32,1),alpha=1,pool_stop=None,classes=1
         conv_poolings.append(conv)
     for j in range(depth):
         step=depth-1-j
-        out=connect_upsample_block([out,poolings[step]],int(64*step*alpha))
+        out=connect_upsample_block([out,conv_poolings[step]],int(64*step*alpha))
     out = Conv2D(classes*2, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(out)
     out = Conv2D(classes, 1, activation = activation)(out)
     model=Model(inputs=[inputs],outputs=[out])
