@@ -71,7 +71,7 @@ def simple_unet(input_size = (32,32,1),alpha=1,pool_stop=None,classes=1,activati
     return model
     
 def pool_block(inputs,kernels=1,kernel_size=3,activation = 'relu', padding = 'same', kernel_initializer = 'he_normal',pool_size=(2,2)):
-    conv = Conv2D(kernels kernel_size, activation =activation, padding = padding, kernel_initializer = kernel_initializer)(inputs)
+    conv = Conv2D(kernels, kernel_size, activation =activation, padding = padding, kernel_initializer = kernel_initializer)(inputs)
     conv = Conv2D(kernels, kernel_size, activation = activation, padding = padding, kernel_initializer = kernel_initializer)(conv)
     pool = MaxPooling2D(pool_size=pool_size)(conv)
     return pool
