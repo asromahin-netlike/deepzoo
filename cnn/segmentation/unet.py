@@ -97,15 +97,15 @@ def simple_depth_unet(input_size = (32,32,1),alpha=1,pool_stop=None,classes=1,ac
     inputs=Input(input_size)
     poolings=[]
     conv_poolings=[]
-    for i in range(len(depth)):
+    for i in range(depth):
         if(i==0):
             out=pool_block(inputs,int(64*2**i*alpha))
         else:
             out=pool_block(out,int(64*2**i**alpha))
         poolings.append(out)
         conv_poolings.append(out.input)
-    for j in range(len(depth)):
-        step=len(depth)-1-j
+    for j in range(depth):
+        step=depth-1-j
         out=upsample_block([out,poolings[step]],int(64*step*alpha))
     out = Conv2D(classes*2, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(out)
     out = Conv2D(classes, 1, activation = activation)(out)
@@ -116,15 +116,15 @@ def connected_unet_depth(input_size = (32,32,1),alpha=1,pool_stop=None,classes=1
     inputs=Input(input_size)
     poolings=[]
     conv_poolings=[]
-    for i in range(len(depth)):
+    for i in range(depth):
         if(i==0):
             out=pool_block(inputs,int(64*2**i*alpha))
         else:
             out=pool_block(out,int(64*2**i**alpha))
         poolings.append(out)
         conv_poolings.append(out.input)
-    for j in range(len(depth)):
-        step=len(depth)-1-j
+    for j in range(depth):
+        step=depth-1-j
         out=connect_upsample_block([out,poolings[step]],int(64*step*alpha))
     out = Conv2D(classes*2, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(out)
     out = Conv2D(classes, 1, activation = activation)(out)
