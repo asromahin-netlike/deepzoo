@@ -74,7 +74,7 @@ def pool_block(inputs,kernels=1,kernel_size=3,activation = 'relu', padding = 'sa
     conv = Conv2D(kernels, kernel_size, activation =activation, padding = padding, kernel_initializer = kernel_initializer)(inputs)
     conv = Conv2D(kernels, kernel_size, activation = activation, padding = padding, kernel_initializer = kernel_initializer)(conv)
     pool = MaxPooling2D(pool_size=pool_size)(conv)
-    return pool
+    return pool,conv
     
 def upsample_block(inputs,kernels=1,kernel_size=3,activation = 'relu', padding = 'same', kernel_initializer = 'he_normal',upsample_size=(2,2)):
     out = Conv2D(kernels ,2, activation =activation, padding = padding, kernel_initializer = kernel_initializer)(UpSampling2D(size = upsample_size)(inputs[0]))
@@ -99,11 +99,11 @@ def simple_depth_unet(input_size = (32,32,1),alpha=1,pool_stop=None,classes=1,ac
     conv_poolings=[]
     for i in range(depth):
         if(i==0):
-            out=pool_block(inputs,int(64*2**i*alpha))
+            out,conv=pool_block(inputs,int(64*2**i*alpha))
         else:
-            out=pool_block(out,int(64*2**i**alpha))
+            out,conv=pool_block(out,int(64*2**i**alpha))
         poolings.append(out)
-        conv_poolings.append(out.input)
+        conv_poolings.append(conv)
     for j in range(depth):
         step=depth-1-j
         out=upsample_block([out,poolings[step]],int(64*step*alpha))
@@ -118,11 +118,11 @@ def connected_unet_depth(input_size = (32,32,1),alpha=1,pool_stop=None,classes=1
     conv_poolings=[]
     for i in range(depth):
         if(i==0):
-            out=pool_block(inputs,int(64*2**i*alpha))
+            out,conv=pool_block(inputs,int(64*2**i*alpha))
         else:
-            out=pool_block(out,int(64*2**i**alpha))
+            out,conv=pool_block(out,int(64*2**i**alpha))
         poolings.append(out)
-        conv_poolings.append(out.input)
+        conv_poolings.append(conv)
     for j in range(depth):
         step=depth-1-j
         out=connect_upsample_block([out,poolings[step]],int(64*step*alpha))
