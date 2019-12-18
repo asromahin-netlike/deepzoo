@@ -58,7 +58,7 @@ def simple_unet(input_size = (32,32,1),alpha=1,pool_stop=None,classes=1,activati
     conv9 = Conv2D(int(64*alpha), 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(merge9)
     conv9 = Conv2D(int(64*alpha), 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv9)
     
-    f(pool_stop==16):
+    if(pool_stop==16):
         last_conv=Conv2D(classes, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv8)
         return Model(input = inputs, output = last_conv)
         
